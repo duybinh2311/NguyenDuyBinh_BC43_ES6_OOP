@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ES6 - OOP</title>
+    <!-- Bootstrap CSS -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0-alpha1/css/bootstrap.min.css"
+    />
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="./index.css" />
+  </head>
+  <body>
+    <header class="bg-dark text-white py-2 text-center">
+      <div class="container">
+        <h4>CyberSoft - ES6</h4>
+      </div>
+    </header>
+    <section class="header py-3 bg-body-secondary">
+      <div class="container">
+        <h5 class="text-center text-capitalize">
+          Institute of Research and Teaching
+        </h5>
+        <div class="input-group">
+          <button
+            class="btn btn-success"
+            data-bs-toggle="modal"
+            data-bs-target="#formInput"
+          >
+            Add
+          </button>
+          <button class="btn btn-primary">Sort By Name</button>
+          <input type="text" class="form-control" id="searchBox" />
+          <label class="input-group-text" for="searchBox">Search</label>
+        </div>
+        <div class="input-group my-2">
+          <label class="input-group-text" for="inputGroupSelect01"
+            >Category</label
+          >
+          <select class="form-select" id="inputGroupSelect01">
+            <option selected>Select...</option>
+            <option value="1">Student</option>
+            <option value="2">Employee</option>
+            <option value="3">Customer</option>
+          </select>
+        </div>
+      </div>
+    </section>
+    <section class="list">
+      <div class="container-fluid">
+        <div class="card">
+          <div class="card-header">
+            <h4 class="text-center">List User</h4>
+          </div>
+          <table
+            class="table table-hover card-body table-bordered border-primary-subtle"
+          >
+            <thead class="table-primary">
+              <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Address</th>
+                <th>Email</th>
+                <th>GPA</th>
+                <th>Total Salary</th>
+                <th>Name Company</th>
+                <th>Bill Invoice</th>
+                <th>Service Rating</th>
+                <th class="text-center">Features</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>10</td>
+                <td>Nguyễn Duy Bình</td>
+                <td>Phan Thiết - Việt Nam</td>
+                <td>duybinh@gmail.com</td>
+                <td>9.5</td>
+                <td>10.000.000</td>
+                <td>108 Gaming</td>
+                <td>2.000.000</td>
+                <td>Excellent</td>
+                <td class="text-center">
+                  <button class="btn btn-primary btn-sm">
+                    <i class="fa fa-edit"></i>
+                  </button>
+                  <button class="btn btn-danger btn-sm">
+                    <i class="fa fa-times-circle"></i>
+                  </button>
+                </td>
+              </tr>
+              <tr>
+                <td>10</td>
+                <td>Nguyễn Duy Bình</td>
+                <td>Phan Thiết - Việt Nam</td>
+                <td>duybinh@gmail.com</td>
+                <td>9.5</td>
+                <td>10.000.000</td>
+                <td>108 Gaming</td>
+                <td>2.000.000</td>
+                <td>Excellent</td>
+                <td class="text-center">
+                  <button class="btn btn-primary btn-sm">
+                    <i class="fa fa-edit"></i>
+                  </button>
+                  <button class="btn btn-danger btn-sm">
+                    <i class="fa fa-times-circle"></i>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+            <tfoot class="card-footer text-center table-primary">
+              <tr>
+                <th class="text-center" colspan="10">
+                  List Users : <span id="totalPerson"></span>
+                </th>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+    </section>
+    <!-- Modal -->
+    <div
+      class="modal fade"
+      id="formInput"
+      data-bs-backdrop="static"
+      data-bs-keyboard="false"
+      tabindex="-1"
+      aria-labelledby="staticBackdropLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="staticBackdropLabel">
+              Enter Information
+            </h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div class="input-group my-1">
+              <label for="id" class="input-group-text">ID</label>
+              <input type="text" class="form-control" id="id" />
+            </div>
+            <div class="input-group my-1">
+              <label for="name" class="input-group-text">Name</label>
+              <input type="text" class="form-control" id="name" />
+            </div>
+            <div class="input-group my-1">
+              <label for="address" class="input-group-text">Address</label>
+              <input type="text" class="form-control" id="address" />
+            </div>
+            <div class="input-group my-1">
+              <label for="email" class="input-group-text">Email</label>
+              <input type="text" class="form-control" id="email" />
+            </div>
+            <div class="input-group my-1">
+              <label for="mathScore" class="input-group-text">Math Score</label>
+              <input type="text" class="form-control" id="mathScore" />
+            </div>
+            <div class="input-group my-1">
+              <label for="physicScore" class="input-group-text"
+                >Physic Score</label
+              >
+              <input type="text" class="form-control" id="physicScore" />
+            </div>
+            <div class="input-group my-1">
+              <label for="chemistryScore" class="input-group-text"
+                >Chemistry Score</label
+              >
+              <input type="text" class="form-control" id="chemistryScore" />
+            </div>
+            <div class="input-group my-1">
+              <label for="daysWorking" class="input-group-text"
+                >Days Working</label
+              >
+              <input type="text" class="form-control" id="daysWorking" />
+            </div>
+            <div class="input-group my-1">
+              <label for="dailySalary" class="input-group-text"
+                >Daily Salary</label
+              >
+              <input type="text" class="form-control" id="dailySalary" />
+            </div>
+            <div class="input-group my-1">
+              <label for="nameCompany" class="input-group-text"
+                >Name Company</label
+              >
+              <input type="text" class="form-control" id="nameCompany" />
+            </div>
+            <div class="input-group my-1">
+              <label for="billInvoice" class="input-group-text"
+                >Bill Invoice</label
+              >
+              <input type="text" class="form-control" id="billInvoice" />
+            </div>
+            <div class="input-group my-1">
+              <label for="serviceRating" class="input-group-text"
+                >Service Rating Company</label
+              >
+              <input type="text" class="form-control" id="serviceRating" />
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-success">Add User</button>
+            <button type="button" class="btn btn-primary">Update Info</button>
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Bootstrap JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0-alpha1/js/bootstrap.min.js"></script>
+    <!-- Main JS -->
+    <script type="module" src="./index.js"></script>
+  </body>
+</html>
