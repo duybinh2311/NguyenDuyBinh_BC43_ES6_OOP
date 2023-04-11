@@ -25,6 +25,7 @@
         <h4>CyberSoft - ES6</h4>
       </div>
     </header>
+
     <!-- Manager -->
     <section class="py-3 bg-body-secondary">
       <div class="container-fluid">
@@ -56,6 +57,7 @@
         </div>
       </div>
     </section>
+
     <!-- List Person -->
     <section class="list">
       <div class="container-fluid py-2">
@@ -72,7 +74,7 @@
                 <th>Name</th>
                 <th>Address</th>
                 <th>Email</th>
-                <th class="text-center">GPA</th>
+                <th class="text-center">Average Score</th>
                 <th class="text-center">Total Salary</th>
                 <th class="text-center">Name Company</th>
                 <th class="text-center">Bill Invoice</th>
@@ -81,68 +83,7 @@
                 <th class="text-center">Category</th>
               </tr>
             </thead>
-            <tbody class="border-primary-subtle">
-              <tr>
-                <td>10</td>
-                <td>Nguyễn Duy Bình</td>
-                <td>Phan Thiết - Việt Nam</td>
-                <td>duybinh@gmail.com</td>
-                <td class="text-center">9.5</td>
-                <td class="bg-body-secondary"></td>
-                <td class="bg-body-secondary"></td>
-                <td class="bg-body-secondary"></td>
-                <td class="bg-body-secondary"></td>
-                <td class="text-center">
-                  <button class="btn btn-primary btn-sm">
-                    <i class="fa fa-edit"></i>
-                  </button>
-                  <button class="btn btn-danger btn-sm">
-                    <i class="fa fa-times-circle"></i>
-                  </button>
-                </td>
-                <td></td>
-              </tr>
-              <tr>
-                <td>10</td>
-                <td>Nguyễn Duy Bình</td>
-                <td>Phan Thiết - Việt Nam</td>
-                <td>duybinh@gmail.com</td>
-                <td class="bg-body-secondary"></td>
-                <td class="text-center">10.000.000</td>
-                <td class="bg-body-secondary"></td>
-                <td class="bg-body-secondary"></td>
-                <td class="bg-body-secondary"></td>
-                <td class="text-center">
-                  <button class="btn btn-primary btn-sm">
-                    <i class="fa fa-edit"></i>
-                  </button>
-                  <button class="btn btn-danger btn-sm">
-                    <i class="fa fa-times-circle"></i>
-                  </button>
-                </td>
-                <td></td>
-              </tr>
-              <tr>
-                <td>10</td>
-                <td>Nguyễn Duy Bình</td>
-                <td>Phan Thiết - Việt Nam</td>
-                <td>duybinh@gmail.com</td>
-                <td class="bg-body-secondary"></td>
-                <td class="bg-body-secondary"></td>
-                <td class="text-center">108 Gaming</td>
-                <td class="text-center">2.000.000</td>
-                <td class="text-center">Excellent</td>
-                <td class="text-center">
-                  <button class="btn btn-primary btn-sm">
-                    <i class="fa fa-edit"></i>
-                  </button>
-                  <button class="btn btn-danger btn-sm">
-                    <i class="fa fa-times-circle"></i>
-                  </button>
-                </td>
-                <td></td>
-              </tr>
-            </tbody>
+            <tbody class="border-primary-subtle"></tbody>
             <tfoot class="text-center table-primary">
               <tr>
                 <th class="text-center" colspan="11">
@@ -154,7 +95,8 @@
         </div>
       </div>
     </section>
-    <!-- Modal -->
+
+    <!-- Modal Form-->
     <div
       class="modal fade"
       id="formInput"
@@ -167,14 +109,12 @@
       <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content">
           <div class="modal-header bg-primary bg-gradient text-bg-primary">
-            <h1
-              class="modal-title fs-5"
-              id="staticBackdropLabel"
-            >
+            <h1 class="modal-title fs-5" id="staticBackdropLabel">
               Enter Information
             </h1>
             <button
               type="button"
+              id="btn-close"
               class="btn text-bg-primary fs-5 border-light"
               data-bs-dismiss="modal"
               aria-label="Close"
@@ -185,11 +125,11 @@
           <div class="modal-body row">
             <div class="input-group my-1">
               <label for="category" class="input-group-text">Category</label>
-              <select name="category" id="caterogy" class="form-select">
-                <option value="All">Select...</option>
-                <option value="Student">Student</option>
-                <option value="Employee">Employee</option>
-                <option value="Customer">Customer</option>
+              <select name="category" id="category" class="form-select">
+                <option value="select">Select...</option>
+                <option value="student">Student</option>
+                <option value="employee">Employee</option>
+                <option value="customer">Customer</option>
               </select>
             </div>
             <div class="input-group my-1">
@@ -209,47 +149,63 @@
               <input type="text" class="form-control" id="email" />
             </div>
             <div class="input-group my-1">
-              <label for="mathScore" class="input-group-text bg-success-subtle">Math Score</label>
+              <label for="mathScore" class="input-group-text bg-success-subtle"
+                >Math Score</label
+              >
               <input type="text" class="form-control" id="mathScore" />
             </div>
             <div class="input-group my-1">
-              <label for="physicScore" class="input-group-text bg-success-subtle"
+              <label
+                for="physicScore"
+                class="input-group-text bg-success-subtle"
                 >Physic Score</label
               >
               <input type="text" class="form-control" id="physicScore" />
             </div>
             <div class="input-group my-1">
-              <label for="chemistryScore" class="input-group-text bg-success-subtle"
+              <label
+                for="chemistryScore"
+                class="input-group-text bg-success-subtle"
                 >Chemistry Score</label
               >
               <input type="text" class="form-control" id="chemistryScore" />
             </div>
             <div class="input-group my-1">
-              <label for="daysWorking" class="input-group-text bg-warning-subtle"
+              <label
+                for="daysWorking"
+                class="input-group-text bg-warning-subtle"
                 >Days Working</label
               >
               <input type="text" class="form-control" id="daysWorking" />
             </div>
             <div class="input-group my-1">
-              <label for="dailySalary" class="input-group-text bg-warning-subtle"
+              <label
+                for="dailySalary"
+                class="input-group-text bg-warning-subtle"
                 >Daily Salary</label
               >
               <input type="text" class="form-control" id="dailySalary" />
             </div>
             <div class="input-group my-1">
-              <label for="nameCompany" class="input-group-text bg-primary-subtle"
+              <label
+                for="nameCompany"
+                class="input-group-text bg-primary-subtle"
                 >Name Company</label
               >
               <input type="text" class="form-control" id="nameCompany" />
             </div>
             <div class="input-group my-1">
-              <label for="billInvoice" class="input-group-text bg-primary-subtle"
+              <label
+                for="billInvoice"
+                class="input-group-text bg-primary-subtle"
                 >Bill Invoice</label
               >
               <input type="text" class="form-control" id="billInvoice" />
             </div>
             <div class="input-group my-1">
-              <label for="serviceRating" class="input-group-text bg-primary-subtle"
+              <label
+                for="serviceRating"
+                class="input-group-text bg-primary-subtle"
                 >Service Rating Company</label
               >
               <input type="text" class="form-control" id="serviceRating" />
@@ -259,9 +215,15 @@
             </div>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-success">Add User</button>
-            <button type="button" class="btn btn-primary">Update Info</button>
-            <button type="button" class="btn btn-danger">Reset Form</button>
+            <button type="button" class="btn btn-success" id="addPerson">
+              Add User
+            </button>
+            <button type="button" class="btn btn-primary" id="updatePerson">
+              Update Info
+            </button>
+            <button type="button" class="btn btn-danger" id="resetForm">
+              Reset Form
+            </button>
           </div>
         </div>
       </div>
@@ -269,6 +231,6 @@
     <!-- Bootstrap JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0-alpha1/js/bootstrap.min.js"></script>
     <!-- Main JS -->
-    <script type="module" src="./index.js"></script>
+    <script type="module" src="./controllers/index.js"></script>
   </body>
 </html>
