@@ -98,6 +98,7 @@ export default class ListPerson {
   }
   /* Update Person */
   static update(personEdit) {
+    debugger
     const person = this.list.find((person) => person.id === personEdit.id)
     Object.assign(person, personEdit)
   }

@@ -27,13 +27,14 @@ Validation.addPerson = () => {
 
 /* Button Update Person */
 DOM.btnUpdatePerson.onclick = () => {
+  debugger
   const personEdit = ListPerson[DOM.categoryForm.value]()
   for (const property in personEdit) {
     const input = DOM.inputList.find((element) => element.id === property)
     if (input) personEdit[property] = input.value
   }
   personEdit.category = DOM.categoryForm.value
-  ListPerson.update(DOM)
+  ListPerson.update(personEdit)
   ListPerson.render(DOM)
   ListPerson.saveLocal()
 }
