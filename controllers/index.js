@@ -1,105 +1,102 @@
-import {
-  btnAddPerson,
-  btnUpdatePerson,
-  btnResetForm,
-  inputList,
-  categoryForm,
-  table,
-  btnSort,
-  searchBox,
-  filterCategory,
-  errorElement,
-} from './DOM.js'
+import { DOM } from '../models/DOM.js'
 import ListPerson from '../models/ListPerson.js'
 import Validation from '../models/Validation.js'
 
 /* Validation Input */
+DOM.btnAddPerson.onclick = () => {
+  Validation.validateForm(DOM)
+}
+/* If Valid True, Add Person To List */
 Validation.addPerson = () => {
   /* New Person = Category Select */
-  const person = ListPerson[categoryForm.value]()
+  const person = ListPerson[DOM.categoryForm.value]()
   // /* Assign Value For Person */
   for (const property in person) {
-    const input = inputList.find((element) => element.id === property)
+    const input = DOM.inputList.find((element) => element.id === property)
     if (input) person[property] = input.value
   }
-  person.category = categoryForm.value
+  person.category = DOM.categoryForm.value
   /* Render List Person */
   ListPerson.add(person)
-  ListPerson.render(table)
+  ListPerson.render(DOM)
+  ListPerson.eventHandleBtn(DOM)
+  ListPerson.total(DOM)
   ListPerson.saveLocal()
-  ListPerson.resetForm()
-}
-btnAddPerson.onclick = () => {
-  Validation.validateForm('.form-input')
+  ListPerson.resetForm(DOM)
 }
 
 /* Button Update Person */
-btnUpdatePerson.onclick = () => {
-  const personEdit = ListPerson[categoryForm.value]()
+DOM.btnUpdatePerson.onclick = () => {
+  const personEdit = ListPerson[DOM.categoryForm.value]()
   for (const property in personEdit) {
-    const input = inputList.find((element) => element.id === property)
+    const input = DOM.inputList.find((element) => element.id === property)
     if (input) personEdit[property] = input.value
   }
-  personEdit.category = categoryForm.value
-  ListPerson.update(personEdit)
-  ListPerson.render(table)
+  personEdit.category = DOM.categoryForm.value
+  ListPerson.update(DOM)
+  ListPerson.render(DOM)
   ListPerson.saveLocal()
 }
 
 /* Button Sort List */
-btnSort.onclick = () => {
+DOM.btnSort.onclick = () => {
   const listSortByName = ListPerson.sort()
-  ListPerson.render(table, listSortByName)
+  ListPerson.render(DOM, listSortByName)
 }
 
 /* Search Box */
-searchBox.oninput = () => {
+DOM.searchBox.oninput = () => {
   const listSearch = []
-  const keywordAscent = ListPerson.stringToSlug(searchBox.value)
+  const keywordAscent = Validation.validFunctions.stringToSlug(searchBox.value)
   for (const person of ListPerson.list) {
-    if (ListPerson.stringToSlug(person.name).search(keywordAscent) !== -1) {
+    if (
+      Validation.validFunctions
+        .stringToSlug(person.name)
+        .search(keywordAscent) !== -1
+    ) {
       listSearch.push(person)
     }
   }
-  ListPerson.render(table, listSearch)
+  ListPerson.render(DOM, listSearch)
 }
 
 /* Filter Category */
-filterCategory.onchange = () => {
-  const value = filterCategory.value // Student
+DOM.filterCategory.onchange = () => {
+  const value = DOM.filterCategory.value // Student
   if (value === 'all') {
-    ListPerson.render(table)
+    ListPerson.render(DOM)
     return
   }
   const filterList = ListPerson.list.filter(
     (element) => element.category === value
   )
-  ListPerson.render(table, filterList)
+  ListPerson.render(DOM, filterList)
 }
 
 /* Disable Input By Category Form */
-categoryForm.onchange = () => {
-  if (categoryForm.value === 'select') {
-    for (const input of inputList) {
+DOM.categoryForm.onchange = () => {
+  if (DOM.categoryForm.value === 'error') return
+  if (DOM.categoryForm.value === 'select') {
+    for (const input of DOM.inputList) {
       input.removeAttribute('disabled')
     }
-    ListPerson.resetMessage(inputList, errorElement)
+    ListPerson.resetMessage(DOM)
     return
   }
-  for (const input of inputList) {
-    if (!ListPerson[categoryForm.value]().hasOwnProperty(input.id)) {
+  for (const input of DOM.inputList) {
+    if (!ListPerson[DOM.categoryForm.value]().hasOwnProperty(input.id)) {
       input.setAttribute('disabled', true)
     } else {
       input.removeAttribute('disabled')
     }
   }
-  ListPerson.resetMessage(inputList, errorElement)
+  ListPerson.resetMessage(DOM)
 }
 
 /* Reset Form */
-btnResetForm.onclick = () => {
-  ListPerson.resetForm()
+DOM.btnResetForm.onclick = () => {
+  ListPerson.resetForm(DOM)
 }
 
 /* Get List Person Form Local And Render UI */
-ListPerson.getLocal(table)
+ListPerson.getLocal(DOM)

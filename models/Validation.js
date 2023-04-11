@@ -1,14 +1,21 @@
 export default class Validation {
-  static validateForm(selectorForm) {
+  static validateForm(DOM) {
     /* Get Form Need Valid */
-    const formElement = document.querySelector(selectorForm)
-    /* If Formelement Has It, Loop List Input Get Rule Check */
+    const formElement = DOM.formInput
+    const categoryForm = DOM.categoryForm
+    /* Valid Select Category */
+    if (categoryForm.value === 'select') {
+      categoryForm.innerHTML += `<option value="error">Please Select Category</option>`
+      categoryForm.value = 'error'
+      categoryForm.dispatchEvent(new Event('change'))
+      categoryForm.classList.add('bg-danger', 'text-bg-danger')
+    }
     if (formElement) {
       const inputList = formElement.querySelectorAll(
         '[id][rulesCheck]:not([disabled])'
       )
-      console.log(inputList)
       const formRules = {}
+      /* Valid Event */
       const handleError = (event) => {
         let errorMessage = ''
         const errorElement =
@@ -25,6 +32,7 @@ export default class Validation {
         }
         return false
       }
+      /* Clear Valid Event */
       const clearError = (event) => {
         const errorElement =
           event.target.parentElement.querySelector('.form-message')
@@ -32,6 +40,7 @@ export default class Validation {
         errorElement.classList.add('d-none')
         event.target.classList.remove('border-danger')
       }
+      /* Loop List Input Get Rule Check */
       for (let input of inputList) {
         let rules = input.getAttribute('rulesCheck')
         if (rules.includes('|')) {
@@ -59,7 +68,7 @@ export default class Validation {
             formRules[input.id] = [this.validFunctions[rule]]
           }
         }
-        // input.onblur = handleError
+        input.onblur = handleError
         input.oninput = clearError
       }
       let isValid = true
@@ -119,6 +128,15 @@ export default class Validation {
           : `Confirmation ${confirmElement.id} is not correcct`
       }
     },
+    confirmID: (listPerson) => {
+      return (value) => {
+        if (!localStorage.getItem(listPerson)) return ''
+        const listLocal = JSON.parse(localStorage.getItem(listPerson))
+        return !listLocal.find((element) => element.id === value)
+          ? ''
+          : `This ID: ${value} is already on the list `
+      }
+    },
     removeAscent: (string) => {
       if (string === null || string === undefined) return string
       string = string.toLowerCase()
@@ -131,14 +149,27 @@ export default class Validation {
       string = string.replace(/đ/g, 'd')
       return string
     },
-    confirmID: (listPerson) => {
-      return (value) => {
-        if (!localStorage.getItem(listPerson)) return ''
-        const listLocal = JSON.parse(localStorage.getItem(listPerson))
-        return !listLocal.find((element) => element.id === value)
-          ? ''
-          : `This ID: ${value} is already on the list `
-      }
+    stringToSlug: (string) => {
+      let slug = string.toLowerCase()
+      slug = slug.replace(/á|à|ả|ạ|ã|ă|ắ|ằ|ẳ|ẵ|ặ|â|ấ|ầ|ẩ|ẫ|ậ/gi, 'a')
+      slug = slug.replace(/é|è|ẻ|ẽ|ẹ|ê|ế|ề|ể|ễ|ệ/gi, 'e')
+      slug = slug.replace(/i|í|ì|ỉ|ĩ|ị/gi, 'i')
+      slug = slug.replace(/ó|ò|ỏ|õ|ọ|ô|ố|ồ|ổ|ỗ|ộ|ơ|ớ|ờ|ở|ỡ|ợ/gi, 'o')
+      slug = slug.replace(/ú|ù|ủ|ũ|ụ|ư|ứ|ừ|ử|ữ|ự/gi, 'u')
+      slug = slug.replace(/ý|ỳ|ỷ|ỹ|ỵ/gi, 'y')
+      slug = slug.replace(/đ/gi, 'd')
+      slug = slug.replace(
+        /\`|\~|\!|\@|\#|\||\$|\%|\^|\&|\*|\(|\)|\+|\=|\,|\.|\/|\?|\>|\<|\'|\"|\:|\;|_/gi,
+        ''
+      )
+      slug = slug.replace(/ /gi, '-')
+      slug = slug.replace(/\-\-\-\-\-/gi, '-')
+      slug = slug.replace(/\-\-\-\-/gi, '-')
+      slug = slug.replace(/\-\-\-/gi, '-')
+      slug = slug.replace(/\-\-/gi, '-')
+      slug = '@' + slug + '@'
+      slug = slug.replace(/\@\-|\-\@|\@/gi, '')
+      return slug
     },
   }
 }

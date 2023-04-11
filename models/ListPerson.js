@@ -1,23 +1,16 @@
-import {
-  inputList,
-  table,
-  categoryForm,
-  btnAddPerson,
-  btnClose,
-} from '../controllers/DOM.js'
 import Customer from './Customer.js'
 import Employee from './Employee.js'
 import Student from './Student.js'
 
 export default class ListPerson {
-  static list = [] 
+  static list = []
   /* Instance Of Class */
   static student = () => new Student()
   static employee = () => new Employee()
   static customer = () => new Customer()
 
   /* Render List Person */
-  static render(table, listPerson = this.list) {
+  static render(DOM, listPerson = this.list) {
     let htmlString = ''
     for (const person of listPerson) {
       htmlString += `
@@ -49,22 +42,23 @@ export default class ListPerson {
       </tr>
     `
     }
-    table.innerHTML = htmlString
-    this.eventHandleBtn()
+    DOM.tableElement.innerHTML = htmlString
   }
   /* Assign Event Button */
-  static eventHandleBtn() {
+  static eventHandleBtn(DOM) {
     const btnListEdit = document.querySelectorAll('.btn-edit')
     const btnListDelete = document.querySelectorAll('.btn-delete')
     for (const [index, btn] of btnListEdit.entries()) {
       btn.addEventListener('click', () => {
-        this.edit(this.list[index].id)
+        this.edit(this.list[index].id, DOM)
       })
     }
     for (const [index, btn] of btnListDelete.entries()) {
       btn.addEventListener('click', () => {
         ListPerson.delete(this.list[index].id)
-        this.render(table)
+        this.render(DOM)
+        this.eventHandleBtn(DOM)
+        this.total(DOM)
         this.saveLocal()
       })
     }
@@ -74,21 +68,28 @@ export default class ListPerson {
     this.list.push(person)
   }
   /* Edit Person */
-  static edit(id) {
+  static edit(id, DOM) {
     const person = this.list.find((element) => element.id === id)
-    for (const input of inputList) {
+    for (const input of DOM.inputList) {
       if (!person.hasOwnProperty(input.id)) {
         input.value = ''
       } else {
         input.value = person[input.id]
       }
     }
-    categoryForm.value = person.category
-    categoryForm.dispatchEvent(new Event('change'))
-    categoryForm.setAttribute('disabled', true)
-    inputList[0].setAttribute('disabled', true)
-    btnAddPerson.setAttribute('disabled', true)
-    btnClose.addEventListener('click', this.resetForm, { once: true })
+    DOM.categoryForm.value = person.category
+    DOM.categoryForm.dispatchEvent(new Event('change'))
+    DOM.categoryForm.setAttribute('disabled', true)
+    DOM.inputList[0].setAttribute('disabled', true)
+    DOM.btnAddPerson.setAttribute('disabled', true)
+    DOM.btnUpdatePerson.removeAttribute('disabled')
+    DOM.btnClose.addEventListener(
+      'click',
+      () => {
+        this.resetForm(DOM)
+      },
+      { once: true }
+    )
   }
   /* Delete Person */
   static delete(id) {
@@ -100,23 +101,33 @@ export default class ListPerson {
     const person = this.list.find((person) => person.id === personEdit.id)
     Object.assign(person, personEdit)
   }
+  /* Total Person */
+  static total(DOM) {
+    const total = this.list.length
+    DOM.totalElement.innerHTML = total
+  }
   /* Reset Form */
-  static resetForm() {
-    categoryForm.value = 'select'
-    categoryForm.dispatchEvent(new Event('change'))
-    categoryForm.removeAttribute('disabled')
-    btnAddPerson.removeAttribute('disabled')
-    for (const input of inputList) {
+  static resetForm(DOM) {
+    DOM.categoryForm.value = 'select'
+    DOM.categoryForm.dispatchEvent(new Event('change'))
+    DOM.categoryForm.removeAttribute('disabled')
+    DOM.btnAddPerson.removeAttribute('disabled')
+    DOM.btnUpdatePerson.setAttribute('disabled', true)
+    for (const input of DOM.inputList) {
       input.value = ''
     }
   }
   /* Reset Message Error */
-  static resetMessage(arrInput, arrError) {
-    for (const input of arrInput) {
+  static resetMessage(DOM) {
+    for (const input of DOM.inputList) {
       input.classList.remove('border-danger')
     }
-    for (const error of arrError) {
+    for (const error of DOM.errorList) {
       error.classList.add('d-none')
+    }
+    if (DOM.categoryForm.classList.contains('bg-danger')) {
+      DOM.categoryForm.classList.remove('bg-danger', 'text-bg-danger')
+      DOM.categoryForm.querySelector('[value="error"]').remove()
     }
   }
   /* Sort By Name */
@@ -127,15 +138,11 @@ export default class ListPerson {
       const fullNameB = b.name.toLowerCase()
       const nameA = fullNameA.split(' ')
       const nameB = fullNameB.split(' ')
-      if (nameA[nameA.length - 1] < nameB[nameB.length -1]) return -1
-      if (nameA[nameA.length - 1] > nameB[nameB.length -1]) return 1
+      if (nameA[nameA.length - 1] < nameB[nameB.length - 1]) return -1
+      if (nameA[nameA.length - 1] > nameB[nameB.length - 1]) return 1
       return 0
     })
     return listSortByName
-  }
-  /* Error Message */
-  static alertError(message) {
-    alert(message)
   }
   /* Save List Person To Local */
   static saveLocal() {
@@ -146,7 +153,7 @@ export default class ListPerson {
     localStorage.removeItem('listPerson')
   }
   /* Get List Person From Local And Render */
-  static getLocal(table) {
+  static getLocal(DOM) {
     /* Get List, Return If Get False */
     let listPersonLocal
     if (localStorage.getItem('listPerson')) {
@@ -156,32 +163,11 @@ export default class ListPerson {
     this.list = listPersonLocal.map((element) => {
       const person = this[element.category]()
       Object.assign(person, element)
-      return person 
+      return person
     })
     /* Render List Person */
-    this.render(table)
-  }
-  /* String To Slug */
-  static stringToSlug(string) {
-    let slug = string.toLowerCase()
-    slug = slug.replace(/á|à|ả|ạ|ã|ă|ắ|ằ|ẳ|ẵ|ặ|â|ấ|ầ|ẩ|ẫ|ậ/gi, 'a')
-    slug = slug.replace(/é|è|ẻ|ẽ|ẹ|ê|ế|ề|ể|ễ|ệ/gi, 'e')
-    slug = slug.replace(/i|í|ì|ỉ|ĩ|ị/gi, 'i')
-    slug = slug.replace(/ó|ò|ỏ|õ|ọ|ô|ố|ồ|ổ|ỗ|ộ|ơ|ớ|ờ|ở|ỡ|ợ/gi, 'o')
-    slug = slug.replace(/ú|ù|ủ|ũ|ụ|ư|ứ|ừ|ử|ữ|ự/gi, 'u')
-    slug = slug.replace(/ý|ỳ|ỷ|ỹ|ỵ/gi, 'y')
-    slug = slug.replace(/đ/gi, 'd')
-    slug = slug.replace(
-      /\`|\~|\!|\@|\#|\||\$|\%|\^|\&|\*|\(|\)|\+|\=|\,|\.|\/|\?|\>|\<|\'|\"|\:|\;|_/gi,
-      ''
-    )
-    slug = slug.replace(/ /gi, '-')
-    slug = slug.replace(/\-\-\-\-\-/gi, '-')
-    slug = slug.replace(/\-\-\-\-/gi, '-')
-    slug = slug.replace(/\-\-\-/gi, '-')
-    slug = slug.replace(/\-\-/gi, '-')
-    slug = '@' + slug + '@'
-    slug = slug.replace(/\@\-|\-\@|\@/gi, '')
-    return slug
+    this.render(DOM)
+    this.eventHandleBtn(DOM)
+    this.total(DOM)
   }
 }
