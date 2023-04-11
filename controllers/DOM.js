@@ -1,23 +1,24 @@
-/* Button Add Person */
+/* Button */
 export const btnAddPerson = document.querySelector('#addPerson')
-
-/* Button Update Person */
 export const btnUpdatePerson = document.querySelector('#updatePerson')
-
-/* Button Reset Form */
 export const btnResetForm = document.querySelector('#resetForm')
-
-/* Button Close */
 export const btnClose = document.querySelector('#btn-close')
+export const btnSort = document.querySelector('#sort-by-name')
 
-/* Form Input List */
+/* Form */
 export const inputList = Array.from(
   document.querySelectorAll('.modal-body input')
 )
-
-/* Form Select Category */
 export const categoryForm = document.querySelector('#category')
 
-/* Table Render List Person */
+/* Table Render */
 export const table = document.querySelector('tbody')
 
+/* Search Box */
+export const searchBox = document.querySelector('#searchBox')
+
+/* Filter Category */
+export const filterCategory = document.querySelector('#filterCategory')
+
+/* Error Element */
+export const errorElement = document.querySelectorAll('.form-message')

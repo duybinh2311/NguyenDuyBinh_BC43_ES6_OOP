@@ -10,16 +10,16 @@ import Employee from './Employee.js'
 import Student from './Student.js'
 
 export default class ListPerson {
-  static list = []
+  static list = [] 
   /* Instance Of Class */
   static student = () => new Student()
   static employee = () => new Employee()
   static customer = () => new Customer()
 
   /* Render List Person */
-  static renderListPerson(table) {
+  static render(table, listPerson = this.list) {
     let htmlString = ''
-    for (const person of this.list) {
+    for (const person of listPerson) {
       htmlString += `
       <tr>
         <td>${person.id}</td>
@@ -58,17 +58,23 @@ export default class ListPerson {
     const btnListDelete = document.querySelectorAll('.btn-delete')
     for (const [index, btn] of btnListEdit.entries()) {
       btn.addEventListener('click', () => {
-        this.updatePerson(this.list[index].id)
+        this.edit(this.list[index].id)
       })
     }
     for (const [index, btn] of btnListDelete.entries()) {
       btn.addEventListener('click', () => {
-        ListPerson.deletePerson(this.list[index].id)
+        ListPerson.delete(this.list[index].id)
+        this.render(table)
+        this.saveLocal()
       })
     }
   }
-  /* Update Person */
-  static updatePerson(id) {
+  /* Add Person */
+  static add(person) {
+    this.list.push(person)
+  }
+  /* Edit Person */
+  static edit(id) {
     const person = this.list.find((element) => element.id === id)
     for (const input of inputList) {
       if (!person.hasOwnProperty(input.id)) {
@@ -85,11 +91,14 @@ export default class ListPerson {
     btnClose.addEventListener('click', this.resetForm, { once: true })
   }
   /* Delete Person */
-  static deletePerson(id) {
+  static delete(id) {
     const indexPerson = this.list.findIndex((element) => element.id === id)
     this.list.splice(indexPerson, 1)
-    this.renderListPerson(table)
-    this.saveLocal()
+  }
+  /* Update Person */
+  static update(personEdit) {
+    const person = this.list.find((person) => person.id === personEdit.id)
+    Object.assign(person, personEdit)
   }
   /* Reset Form */
   static resetForm() {
@@ -101,8 +110,29 @@ export default class ListPerson {
       input.value = ''
     }
   }
-  /* Confirm Update Person */
-  // static confirmUpdatePerson()
+  /* Reset Message Error */
+  static resetMessage(arrInput, arrError) {
+    for (const input of arrInput) {
+      input.classList.remove('border-danger')
+    }
+    for (const error of arrError) {
+      error.classList.add('d-none')
+    }
+  }
+  /* Sort By Name */
+  static sort() {
+    const listSortByName = [...this.list]
+    listSortByName.sort((a, b) => {
+      const fullNameA = a.name.toLowerCase()
+      const fullNameB = b.name.toLowerCase()
+      const nameA = fullNameA.split(' ')
+      const nameB = fullNameB.split(' ')
+      if (nameA[nameA.length - 1] < nameB[nameB.length -1]) return -1
+      if (nameA[nameA.length - 1] > nameB[nameB.length -1]) return 1
+      return 0
+    })
+    return listSortByName
+  }
   /* Error Message */
   static alertError(message) {
     alert(message)
@@ -126,9 +156,32 @@ export default class ListPerson {
     this.list = listPersonLocal.map((element) => {
       const person = this[element.category]()
       Object.assign(person, element)
-      return person
+      return person 
     })
     /* Render List Person */
-    this.renderListPerson(table)
+    this.render(table)
+  }
+  /* String To Slug */
+  static stringToSlug(string) {
+    let slug = string.toLowerCase()
+    slug = slug.replace(/á|à|ả|ạ|ã|ă|ắ|ằ|ẳ|ẵ|ặ|â|ấ|ầ|ẩ|ẫ|ậ/gi, 'a')
+    slug = slug.replace(/é|è|ẻ|ẽ|ẹ|ê|ế|ề|ể|ễ|ệ/gi, 'e')
+    slug = slug.replace(/i|í|ì|ỉ|ĩ|ị/gi, 'i')
+    slug = slug.replace(/ó|ò|ỏ|õ|ọ|ô|ố|ồ|ổ|ỗ|ộ|ơ|ớ|ờ|ở|ỡ|ợ/gi, 'o')
+    slug = slug.replace(/ú|ù|ủ|ũ|ụ|ư|ứ|ừ|ử|ữ|ự/gi, 'u')
+    slug = slug.replace(/ý|ỳ|ỷ|ỹ|ỵ/gi, 'y')
+    slug = slug.replace(/đ/gi, 'd')
+    slug = slug.replace(
+      /\`|\~|\!|\@|\#|\||\$|\%|\^|\&|\*|\(|\)|\+|\=|\,|\.|\/|\?|\>|\<|\'|\"|\:|\;|_/gi,
+      ''
+    )
+    slug = slug.replace(/ /gi, '-')
+    slug = slug.replace(/\-\-\-\-\-/gi, '-')
+    slug = slug.replace(/\-\-\-\-/gi, '-')
+    slug = slug.replace(/\-\-\-/gi, '-')
+    slug = slug.replace(/\-\-/gi, '-')
+    slug = '@' + slug + '@'
+    slug = slug.replace(/\@\-|\-\@|\@/gi, '')
+    return slug
   }
 }
