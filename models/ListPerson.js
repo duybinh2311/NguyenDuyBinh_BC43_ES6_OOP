@@ -31,7 +31,7 @@ export default class ListPerson {
             ? Number(person.billInvoice).toLocaleString() + ` VND`
             : ''
         }</td>
-        <td class="text-center">${person.serviceRating || ''}</td>
+        <td class="text-center">${person.customerReview || ''}</td>
         <td class="text-center">
           <button class="btn btn-primary btn-sm btn-edit" data-bs-toggle="modal" data-bs-target="#formInput">
             <i class="fa fa-edit"></i>
@@ -101,6 +101,7 @@ export default class ListPerson {
   }
   /* Update Person */
   static update(personEdit) {
+    debugger
     const person = this.list.find((person) => person.id === personEdit.id)
     Object.assign(person, personEdit)
   }
