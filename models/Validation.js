@@ -1,8 +1,34 @@
 export default class Validation {
-  static validateForm(DOM) {
+  static validateForm(DOM, event) {
     /* Get Form Need Valid */
     const formElement = DOM.formInput
     const categoryForm = DOM.categoryForm
+    const formRules = {}
+    /* Valid Event Handle */
+    const handleError = (event) => {
+      let errorMessage = ''
+      const errorElement =
+        event.target.parentElement.querySelector('.form-message')
+      formRules[event.target.id].find((valid) => {
+        errorMessage = valid(event.target.value)
+        return errorMessage
+      })
+      if (errorMessage) {
+        errorElement.innerHTML = errorMessage
+        errorElement.classList.remove('d-none')
+        event.target.classList.add('border-danger')
+        return true
+      }
+      return false
+    }
+    /* Clear Valid Event Handle */
+    const clearError = (event) => {
+      const errorElement =
+        event.target.parentElement.querySelector('.form-message')
+      errorElement.innerHTML = ''
+      errorElement.classList.add('d-none')
+      event.target.classList.remove('border-danger')
+    }
     /* Valid Select Category */
     if (categoryForm.value === 'select') {
       categoryForm.innerHTML += `<option value="error">Please Select Category</option>`
@@ -10,37 +36,11 @@ export default class Validation {
       categoryForm.dispatchEvent(new Event('change'))
       categoryForm.classList.add('bg-danger', 'text-bg-danger')
     }
+    /* Loop List Input Get Rule Check */
     if (formElement) {
       const inputList = formElement.querySelectorAll(
         '[id][rulesCheck]:not([disabled])'
       )
-      const formRules = {}
-      /* Valid Event */
-      const handleError = (event) => {
-        let errorMessage = ''
-        const errorElement =
-          event.target.parentElement.querySelector('.form-message')
-        formRules[event.target.id].find((valid) => {
-          errorMessage = valid(event.target.value)
-          return errorMessage
-        })
-        if (errorMessage) {
-          errorElement.innerHTML = errorMessage
-          errorElement.classList.remove('d-none')
-          event.target.classList.add('border-danger')
-          return true
-        }
-        return false
-      }
-      /* Clear Valid Event */
-      const clearError = (event) => {
-        const errorElement =
-          event.target.parentElement.querySelector('.form-message')
-        errorElement.innerHTML = ''
-        errorElement.classList.add('d-none')
-        event.target.classList.remove('border-danger')
-      }
-      /* Loop List Input Get Rule Check */
       for (let input of inputList) {
         let rules = input.getAttribute('rulesCheck')
         if (rules.includes('|')) {
@@ -68,8 +68,11 @@ export default class Validation {
             formRules[input.id] = [this.validFunctions[rule]]
           }
         }
-        input.onblur = handleError
         input.oninput = clearError
+      }
+      /* Valid Form */
+      if (event.target.id === 'updatePerson') {
+        formRules.email.splice(formRules.email.length - 1)
       }
       let isValid = true
       for (const input of inputList) {
@@ -77,8 +80,15 @@ export default class Validation {
           isValid = false
         }
       }
-      if (isValid && typeof this.addPerson === 'function') {
+      /* Valid True, Call Add Person */
+      if (isValid && !DOM.btnAddPerson.hasAttribute('disabled')) {
         this.addPerson()
+        return
+      }
+      /* Valid True, Call Update Person */
+      if (isValid && !DOM.btnUpdatePerson.hasAttribute('disabled')) {
+        this.updatePerson()
+        return
       }
     }
   }
@@ -109,14 +119,24 @@ export default class Validation {
         ? ''
         : `Password needs at least one uppercase, number and special character`
     },
-    min: (min) => {
+    minLength: (min) => {
       return (value) => {
         return value.length >= min ? '' : `Min ${min} characters`
       }
     },
-    max: (max) => {
+    maxLength: (max) => {
       return (value) => {
         return value.length <= max ? '' : `Max ${max} characters`
+      }
+    },
+    minValue: (min) => {
+      return (value) => {
+        return value >= Number(min) ? '' : `The input value must be greater than or equal to ${Number(min).toLocaleString()}`
+      }
+    },
+    maxValue: (max) => {
+      return (value) => {
+        return value <= Number(max) ? '' : `The input value must be less than or equal to ${Number(max).toLocaleString()}`
       }
     },
     confirm: (selectorConfirm) => {
@@ -128,13 +148,22 @@ export default class Validation {
           : `Confirmation ${confirmElement.id} is not correcct`
       }
     },
-    confirmID: (listPerson) => {
+    availableID: (listPerson) => {
       return (value) => {
         if (!localStorage.getItem(listPerson)) return ''
         const listLocal = JSON.parse(localStorage.getItem(listPerson))
         return !listLocal.find((element) => element.id === value)
           ? ''
           : `This ID: ${value} is already on the list `
+      }
+    },
+    availableEmail: (listPerson) => {
+      return (value) => {
+        if (!localStorage.getItem(listPerson)) return ''
+        const listLocal = JSON.parse(localStorage.getItem(listPerson))
+        return !listLocal.find((element) => element.email === value)
+          ? ''
+          : `This Email: ${value} is already on the list `
       }
     },
     removeAscent: (string) => {

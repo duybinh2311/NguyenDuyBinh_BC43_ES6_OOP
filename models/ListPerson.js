@@ -15,7 +15,7 @@ export default class ListPerson {
     for (const person of listPerson) {
       htmlString += `
       <tr>
-        <td>${person.id}</td>
+        <td class="text-center">${person.id}</td>
         <td>${person.name}</td>
         <td>${person.address}</td>
         <td>${person.email}</td>
@@ -26,15 +26,13 @@ export default class ListPerson {
           person.totalSalary ? person.totalSalary() : ''
         }</td>
         <td class="text-center">${person.nameCompany || ''}</td>
-        <td class="text-center">${person.billInvoice || ''}</td>
+        <td class="text-center">${person.billInvoice ? (Number(person.billInvoice).toLocaleString() + ` VND`) : ''}</td>
         <td class="text-center">${person.serviceRating || ''}</td>
         <td class="text-center">
           <button class="btn btn-primary btn-sm btn-edit" data-bs-toggle="modal" data-bs-target="#formInput">
             <i class="fa fa-edit"></i>
           </button>
-          <button class="btn btn-danger btn-sm btn-delete" onclick="delete(${
-            person.id
-          })">
+          <button class="btn btn-danger btn-sm btn-delete">
             <i class="fa fa-times-circle"></i>
           </button>
         </td>
@@ -45,19 +43,20 @@ export default class ListPerson {
     DOM.tableElement.innerHTML = htmlString
   }
   /* Assign Event Button */
-  static eventHandleBtn(DOM) {
+  static eventHandleBtn(DOM, listPerson = this.list) {
     const btnListEdit = document.querySelectorAll('.btn-edit')
     const btnListDelete = document.querySelectorAll('.btn-delete')
     for (const [index, btn] of btnListEdit.entries()) {
       btn.addEventListener('click', () => {
-        this.edit(this.list[index].id, DOM)
+        this.edit(listPerson[index].id, DOM)
       })
     }
     for (const [index, btn] of btnListDelete.entries()) {
       btn.addEventListener('click', () => {
-        ListPerson.delete(this.list[index].id)
+        ListPerson.delete(listPerson[index].id)
         this.render(DOM)
         this.eventHandleBtn(DOM)
+        this.empty(DOM)
         this.total(DOM)
         this.saveLocal()
       })
@@ -98,14 +97,31 @@ export default class ListPerson {
   }
   /* Update Person */
   static update(personEdit) {
-    debugger
     const person = this.list.find((person) => person.id === personEdit.id)
     Object.assign(person, personEdit)
   }
   /* Total Person */
-  static total(DOM) {
-    const total = this.list.length
+  static total(DOM, listPerson = this.list) {
+    const total = listPerson.length
     DOM.totalElement.innerHTML = total
+  }
+  /* Check Empty */
+  static empty(DOM) {
+    const tdTable = DOM.tableElement.querySelectorAll('td')
+    for (const td of tdTable) {
+      if (!td.innerHTML) {
+        td.classList.add('bg-body-secondary')
+      }
+      if (td.innerHTML === 'student') {
+        td.classList.add('text-bg-success')
+      }
+      if (td.innerHTML === 'employee') {
+        td.classList.add('text-bg-primary')
+      }
+      if (td.innerHTML === 'customer') {
+        td.classList.add('text-bg-danger')
+      }
+    }
   }
   /* Reset Form */
   static resetForm(DOM) {
@@ -169,6 +185,7 @@ export default class ListPerson {
     /* Render List Person */
     this.render(DOM)
     this.eventHandleBtn(DOM)
+    this.empty(DOM)
     this.total(DOM)
   }
 }

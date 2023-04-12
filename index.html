@@ -70,7 +70,7 @@
           >
             <thead class="table-primary">
               <tr>
-                <th>ID</th>
+                <th class="text-center">ID</th>
                 <th>Full Name</th>
                 <th>Address</th>
                 <th>Email</th>
@@ -78,7 +78,7 @@
                 <th class="text-center">Total Salary</th>
                 <th class="text-center">Name Company</th>
                 <th class="text-center">Bill Invoice</th>
-                <th class="text-center">Service Rating</th>
+                <th class="text-center">Customer Review</th>
                 <th class="text-center">Features</th>
                 <th class="text-center">Category</th>
               </tr>
@@ -141,7 +141,7 @@
                 type="text"
                 class="form-control"
                 id="id"
-                rulesCheck="required|number|confirmID:listPerson"
+                rulesCheck="required|number|minValue:1|availableID:listPerson"
               />
               <span
                 class="form-message d-none input-group-text bg-danger text-bg-danger"
@@ -177,7 +177,7 @@
                 type="text"
                 class="form-control"
                 id="email"
-                rulesCheck="required|email"
+                rulesCheck="required|email|availableEmail:listPerson"
               />
               <span
                 class="form-message d-none input-group-text bg-danger text-bg-danger"
@@ -191,7 +191,7 @@
                 type="text"
                 class="form-control"
                 id="mathScore"
-                rulesCheck="required|number"
+                rulesCheck="required|number|minValue:0|maxValue:10"
               />
               <span
                 class="form-message d-none input-group-text bg-danger text-bg-danger"
@@ -207,7 +207,7 @@
                 type="text"
                 class="form-control"
                 id="physicScore"
-                rulesCheck="required|number"
+                rulesCheck="required|number|minValue:0|maxValue:10"
               />
               <span
                 class="form-message d-none input-group-text bg-danger text-bg-danger"
@@ -223,7 +223,7 @@
                 type="text"
                 class="form-control"
                 id="chemistryScore"
-                rulesCheck="required|number"
+                rulesCheck="required|number|minValue:0|maxValue:10"
               />
               <span
                 class="form-message d-none input-group-text bg-danger text-bg-danger"
@@ -255,7 +255,7 @@
                 type="text"
                 class="form-control"
                 id="dailySalary"
-                rulesCheck="required|number"
+                rulesCheck="required|number|minValue:150000"
               />
               <span
                 class="form-message d-none input-group-text bg-danger text-bg-danger"
@@ -271,7 +271,7 @@
                 type="text"
                 class="form-control"
                 id="nameCompany"
-                rulesCheck="required"
+                rulesCheck="required|letter"
               />
               <span
                 class="form-message d-none input-group-text bg-danger text-bg-danger"
@@ -287,7 +287,7 @@
                 type="text"
                 class="form-control"
                 id="billInvoice"
-                rulesCheck="required|number"
+                rulesCheck="required|number|minValue:500000"
               />
               <span
                 class="form-message d-none input-group-text bg-danger text-bg-danger"
@@ -295,14 +295,14 @@
             </div>
             <div class="input-group my-1">
               <label
-                for="serviceRating"
+                for="customerReview"
                 class="input-group-text bg-primary-subtle"
-                >Service Rating</label
+                >Customer Review</label
               >
               <input
                 type="text"
                 class="form-control"
-                id="serviceRating"
+                id="customerReview"
                 rulesCheck="required|letter"
               />
               <span

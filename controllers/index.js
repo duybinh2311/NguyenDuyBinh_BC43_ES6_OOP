@@ -2,9 +2,9 @@ import { DOM } from '../models/DOM.js'
 import ListPerson from '../models/ListPerson.js'
 import Validation from '../models/Validation.js'
 
-/* Validation Input */
-DOM.btnAddPerson.onclick = () => {
-  Validation.validateForm(DOM)
+/* Validation Add */
+DOM.btnAddPerson.onclick = (event) => {
+  Validation.validateForm(DOM, event)
 }
 /* If Valid True, Add Person To List */
 Validation.addPerson = () => {
@@ -20,14 +20,19 @@ Validation.addPerson = () => {
   ListPerson.add(person)
   ListPerson.render(DOM)
   ListPerson.eventHandleBtn(DOM)
+  ListPerson.empty(DOM)
   ListPerson.total(DOM)
   ListPerson.saveLocal()
   ListPerson.resetForm(DOM)
+  DOM.btnClose.click()
 }
 
-/* Button Update Person */
-DOM.btnUpdatePerson.onclick = () => {
-  debugger
+/* Validation Update */
+DOM.btnUpdatePerson.onclick = (event) => {
+  Validation.validateForm(DOM, event)
+}
+/* If Valid True, Update Person At List */
+Validation.updatePerson = () => {
   const personEdit = ListPerson[DOM.categoryForm.value]()
   for (const property in personEdit) {
     const input = DOM.inputList.find((element) => element.id === property)
@@ -36,13 +41,21 @@ DOM.btnUpdatePerson.onclick = () => {
   personEdit.category = DOM.categoryForm.value
   ListPerson.update(personEdit)
   ListPerson.render(DOM)
+  ListPerson.eventHandleBtn(DOM)
+  ListPerson.empty(DOM)
+  ListPerson.total(DOM)
   ListPerson.saveLocal()
+  ListPerson.resetForm(DOM)
+  DOM.btnClose.click()
 }
 
 /* Button Sort List */
 DOM.btnSort.onclick = () => {
   const listSortByName = ListPerson.sort()
   ListPerson.render(DOM, listSortByName)
+  ListPerson.eventHandleBtn(DOM, listSortByName)
+  ListPerson.empty(DOM)
+  ListPerson.total(DOM)
 }
 
 /* Search Box */
@@ -59,6 +72,9 @@ DOM.searchBox.oninput = () => {
     }
   }
   ListPerson.render(DOM, listSearch)
+  ListPerson.eventHandleBtn(DOM, listSearch)
+  ListPerson.empty(DOM)
+  ListPerson.total(DOM, listSearch)
 }
 
 /* Filter Category */
@@ -72,6 +88,9 @@ DOM.filterCategory.onchange = () => {
     (element) => element.category === value
   )
   ListPerson.render(DOM, filterList)
+  ListPerson.eventHandleBtn(DOM, filterList)
+  ListPerson.empty(DOM)
+  ListPerson.total(DOM, filterList)
 }
 
 /* Disable Input By Category Form */

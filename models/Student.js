@@ -5,11 +5,10 @@ export default class Student extends Person {
   physicScore
   chemistryScore
   averageScore() {
-    return (
-      (Number(this.mathScore) +
-        Number(this.physicScore) +
-        Number(this.chemistryScore)) /
-      3
-    )
+    const m = Number(this.mathScore)
+    const p = Number(this.physicScore)
+    const c = Number(this.chemistryScore)
+    const avr = (m + p + c) / 3
+    return Number.isInteger(avr) ? avr : avr.toFixed(1)
   }
 }
