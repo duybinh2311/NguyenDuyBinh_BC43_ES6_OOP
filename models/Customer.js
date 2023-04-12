@@ -1,4 +1,4 @@
-import Person from "./Person.js";
+import Person from './Person.js'
 
 export default class Customer extends Person {
   nameCompany

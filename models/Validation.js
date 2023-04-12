@@ -131,12 +131,20 @@ export default class Validation {
     },
     minValue: (min) => {
       return (value) => {
-        return value >= Number(min) ? '' : `The input value must be greater than or equal to ${Number(min).toLocaleString()}`
+        return value >= Number(min)
+          ? ''
+          : `The input value must be greater than or equal to ${Number(
+              min
+            ).toLocaleString()}`
       }
     },
     maxValue: (max) => {
       return (value) => {
-        return value <= Number(max) ? '' : `The input value must be less than or equal to ${Number(max).toLocaleString()}`
+        return value <= Number(max)
+          ? ''
+          : `The input value must be less than or equal to ${Number(
+              max
+            ).toLocaleString()}`
       }
     },
     confirm: (selectorConfirm) => {

@@ -26,7 +26,11 @@ export default class ListPerson {
           person.totalSalary ? person.totalSalary() : ''
         }</td>
         <td class="text-center">${person.nameCompany || ''}</td>
-        <td class="text-center">${person.billInvoice ? (Number(person.billInvoice).toLocaleString() + ` VND`) : ''}</td>
+        <td class="text-center">${
+          person.billInvoice
+            ? Number(person.billInvoice).toLocaleString() + ` VND`
+            : ''
+        }</td>
         <td class="text-center">${person.serviceRating || ''}</td>
         <td class="text-center">
           <button class="btn btn-primary btn-sm btn-edit" data-bs-toggle="modal" data-bs-target="#formInput">
