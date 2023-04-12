@@ -82,6 +82,9 @@ DOM.filterCategory.onchange = () => {
   const value = DOM.filterCategory.value // Student
   if (value === 'all') {
     ListPerson.render(DOM)
+    ListPerson.eventHandleBtn(DOM)
+    ListPerson.empty(DOM)
+    ListPerson.total(DOM)
     return
   }
   const filterList = ListPerson.list.filter(

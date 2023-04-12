@@ -4,6 +4,7 @@ export default class Validation {
     const formElement = DOM.formInput
     const categoryForm = DOM.categoryForm
     const formRules = {}
+    let isValid = true
     /* Valid Event Handle */
     const handleError = (event) => {
       let errorMessage = ''
@@ -35,6 +36,10 @@ export default class Validation {
       categoryForm.value = 'error'
       categoryForm.dispatchEvent(new Event('change'))
       categoryForm.classList.add('bg-danger', 'text-bg-danger')
+      isValid = false
+    }
+    if (categoryForm.value === 'error') {
+      isValid = false
     }
     /* Loop List Input Get Rule Check */
     if (formElement) {
@@ -74,7 +79,6 @@ export default class Validation {
       if (event.target.id === 'updatePerson') {
         formRules.email.splice(formRules.email.length - 1)
       }
-      let isValid = true
       for (const input of inputList) {
         if (handleError({ target: input })) {
           isValid = false
