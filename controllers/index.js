@@ -1,4 +1,4 @@
-import { DOM } from '../models/DOM.js'
+import { DOM } from '../utils/DOM.js'
 import ListPerson from '../models/ListPerson.js'
 import Validation from '../models/Validation.js'
 
