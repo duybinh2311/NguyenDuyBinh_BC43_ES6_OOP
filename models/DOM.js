@@ -15,4 +15,3 @@ export const DOM = {
   formInput: document.querySelector('.form-input'),
 }
 
-DOM.categoryForm // select
