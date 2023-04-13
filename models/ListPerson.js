@@ -48,8 +48,8 @@ export default class ListPerson {
   }
   /* Assign Event Button */
   static eventHandleBtn(DOM, listPerson = this.list) {
-    const btnListEdit = document.querySelectorAll('.btn-edit')
-    const btnListDelete = document.querySelectorAll('.btn-delete')
+    const btnListEdit = document.querySelectorAll(DOM.btnListEdit)
+    const btnListDelete = document.querySelectorAll(DOM.btnListDelete)
     for (const [index, btn] of btnListEdit.entries()) {
       btn.addEventListener('click', () => {
         this.edit(listPerson[index].id, DOM)

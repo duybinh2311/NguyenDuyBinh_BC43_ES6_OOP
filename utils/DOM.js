@@ -13,5 +13,6 @@ export const DOM = {
   errorList: document.querySelectorAll('.form-message'),
   totalElement: document.querySelector('#totalPerson'),
   formInput: document.querySelector('.form-input'),
+  btnListEdit: '.btn-edit',
+  btnListDelete: '.btn-delete',
 }
-
